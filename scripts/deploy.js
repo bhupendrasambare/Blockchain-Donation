@@ -1,26 +1,53 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// You can also run a script with `npx hardhat run <script>`. If you do that, Hardhat
-// will compile your contracts, add the Hardhat Runtime Environment's members to the
-// global scope, and execute the script.
 const hre = require("hardhat");
 
+async function getBalance(address){
+    const balance = await hre.ethers.provider.getBalance(address);
+    return hre.ethers.utils.formatEther(balance);
+}
+
+async function consoleBalance(addresses){
+    let counter = 1;
+    for(const address of addresses){
+        console.log(`Address ${counter} balance : `, await getBalance(address));
+        counter++;
+    }
+}
+
+async function consoleMemos(memos){
+    for(const memo of memos){
+        const timeStamp = memo.timestamp;
+        const name = memo.name;
+        const from = memo.from;
+        const message = memo.message;
+        console.log(`At ${timeStamp} ${name} ${from} : ${message}`);
+    }
+}
+
 async function main() {
-  const currentTimestampInSeconds = Math.round(Date.now() / 1000);
-  const ONE_YEAR_IN_SECS = 365 * 24 * 60 * 60;
-  const unlockTime = currentTimestampInSeconds + ONE_YEAR_IN_SECS;
+    const [owner,from1,from2,from3,from4,from5,from6] = await hre.ethers.getSigners();
+    const donation = await  hre.ethers.getContractFactory("Donation");
+    const contract = await donation.deploy();
 
-  const lockedAmount = hre.ethers.utils.parseEther("1");
+    await contract.deployed();
+    console.log("Address of contract "+contract.address);
 
-  const Lock = await hre.ethers.getContractFactory("Lock");
-  const lock = await Lock.deploy(unlockTime, { value: lockedAmount });
+    const addresses = [owner.address,from1.address,from2.address,from3.address,from4.address,from5.address,from6.address];
 
-  await lock.deployed();
+    console.log("Before donation ")
+    await consoleBalance(addresses);
 
-  console.log(
-    `Lock with 1 ETH and unlock timestamp ${unlockTime} deployed to ${lock.address}`
-  );
+    const ammount = {value:hre.ethers.utils.parseEther("1")};
+    await contract.connect(from1).buyChai("from1","Donation from first", ammount);
+    await contract.connect(from2).buyChai("from1","Donation from second", ammount);
+    await contract.connect(from3).buyChai("from1","Donation from third", ammount);
+    await contract.connect(from4).buyChai("from1","Donation from forth", ammount);
+    await contract.connect(from5).buyChai("from1","Donation from fifth", ammount);
+    await contract.connect(from6).buyChai("from1","Donation from sixth", ammount);
+
+    console.log("After donation ")
+    await consoleBalance(addresses);
+    
+    await consoleMemos(await contract.getMemos());
 }
 
 // We recommend this pattern to be able to use async/await everywhere
