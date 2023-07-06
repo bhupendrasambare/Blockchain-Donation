@@ -1,25 +1,44 @@
-import logo from './logo.svg';
+import {useState,useEffect} from "react"
+import {ethers} from 'ethers'
+import abi from "./utils/artifacts/contracts/Donation.sol/Donation.json"
+import { contract } from "./Constant";
+
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const [state,setState] = useState({
+        privider:null,
+        signer:null,
+        contract:null
+    });
+
+    useEffect(()=>{
+        const connectWallet = async ()=>{
+
+            try{
+                const{ethereum} = window;
+                if(ethereum){
+                    const account = await ethereum.request({method:"eth_requestAccounts"})
+                }
+                const provider = new ethers.providers.Web3Provider(ethereum);
+                const signer = provider.getSigner();
+                const contracts = new ethers.Contract(contract,abi.abi,signer);
+                setState({provider,signer,contracts})
+            }catch(e){
+                console.log(e)
+            }
+        }
+        connectWallet()
+    },[])
+    console.log(state)
+
+
+    return (
+        <div className="App">
+
+        </div>
+    );
 }
 
 export default App;
