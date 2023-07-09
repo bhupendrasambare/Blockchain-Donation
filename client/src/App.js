@@ -36,7 +36,7 @@ function App() {
 
     return (
         <div className="App">
-
+                Connect wallet
         </div>
     );
 }
