@@ -1,7 +1,8 @@
 import {useState,useEffect} from "react"
 import {ethers} from 'ethers'
 import abi from "./utils/artifacts/contracts/Donation.sol/Donation.json"
-import { contract } from "./Constant";
+import { contractAddress } from "./Constant";
+import Buy from "./Components/Buy"
 
 import './App.css';
 
@@ -12,23 +13,44 @@ function App() {
         signer:null,
         contract:null
     });
+    const [account, setAccount] = useState("None");
 
     useEffect(()=>{
         const connectWallet = async ()=>{
 
-            try{
-                const{ethereum} = window;
-                if(ethereum){
-                    const account = await ethereum.request({method:"eth_requestAccounts"})
+            const contractABI = abi.abi;
+            try {
+                const { ethereum } = window;
+        
+                if (ethereum) {
+                  const account = await ethereum.request({
+                    method: "eth_requestAccounts",
+                  });
+        
+                  window.ethereum.on("chainChanged", () => {
+                    window.location.reload();
+                  });
+        
+                  window.ethereum.on("accountsChanged", () => {
+                    window.location.reload();
+                  });
+        
+                  const provider = new ethers.providers.Web3Provider(ethereum);
+                  const signer = provider.getSigner();
+                  const contract = new ethers.Contract(
+                    contractAddress,
+                    contractABI,
+                    signer
+                  );
+                  setAccount(account);
+                  setState({ provider, signer, contract });
+                } else {
+                  alert("Please install metamask");
                 }
-                const provider = new ethers.providers.Web3Provider(ethereum);
-                const signer = provider.getSigner();
-                const contracts = new ethers.Contract(contract,abi.abi,signer);
-                setState({provider,signer,contracts})
-            }catch(e){
-                console.log(e)
-            }
-        }
+              } catch (error) {
+                console.log(error);
+              }
+        };
         connectWallet()
     },[])
     console.log(state)
@@ -36,7 +58,7 @@ function App() {
 
     return (
         <div className="App">
-                Connect wallet
+            <Buy state={state}></Buy>
         </div>
     );
 }
