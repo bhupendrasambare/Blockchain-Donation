@@ -3,6 +3,7 @@ import {ethers} from 'ethers'
 import abi from "./utils/artifacts/contracts/Donation.sol/Donation.json"
 import { contractAddress } from "./Constant";
 import Buy from "./Components/Buy"
+import Memos from "./Components/Memos"
 
 import './App.css';
 
@@ -59,6 +60,7 @@ function App() {
     return (
         <div className="App">
             <Buy state={state}></Buy>
+            <Memos state={state}></Memos>
         </div>
     );
 }
