@@ -54,7 +54,6 @@ function App() {
         };
         connectWallet()
     },[])
-    console.log(state)
 
 
     return (

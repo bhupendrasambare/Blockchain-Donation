@@ -24,9 +24,9 @@ const Buy = (state) =>{
 
     return (
         <>
-            <div className="bg-top pt-5">
+            <div className="bg-top py-4">
                 <form onSubmit={buyChai} className="container bg-light-10 p-4 rounded">
-                    <div className="row py-5">
+                    <div className="d-flex row py-5">
 
                         <div className="col-sm-4">
                             <label htmlFor="name" className="fw-bold text-light d-flex my-2">Enter Name</label>
@@ -46,6 +46,7 @@ const Buy = (state) =>{
 
                     </div>
                     <div className="d-flex w-100 justify-content-right">
+                        <p className="fw-bold bg-light-30 rounded px-3">✩ Your donation value will be a secret</p>
                     <button className="btn ms-auto btn-dark px-4" type="submit">
                         {(processing)?<><span className="spinner-border p-2 spinner-border-sm mx-2" role="status" aria-hidden="true"></span></>:<></>}
                         Pay

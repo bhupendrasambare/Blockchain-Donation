@@ -6,7 +6,13 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+html {
+  scroll-behavior: smooth;
+}
+::-webkit-scrollbar {
+  width: 0em;
+  height: 0em
+}​
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
@@ -15,13 +21,33 @@ code {
   background:url('./assets/top-bg.jpg') ;
   background-size: cover;
   background-position: center;
-  min-height: 400px;
+  min-height: 310px;
+}
+.bg-memos{
+  min-height: calc(100vh - 310px);
+  background:url('./assets/bottom-bg.jpg') ;
+  background-size: cover;
+  background-position: center;
 }
 
 .bg-light-10{
   background-color: rgba(255, 255, 255, 0.38);
 }
+.bg-light-30{
+  background-color: rgba(255, 255, 255, 0.60);
+}
 .btn-dark-update{
   background-color: aliceblue;
   font-size: 2rem;
+}
+.bg-light{
+  background-color: #fff;
+}
+table tr td, table tr th{
+  background-color: rgba(255, 255, 255, 0.851) !important;
+}
+tr {
+  line-height: 30px;
+  min-height: 30px;
+  height: 30px;
 }
