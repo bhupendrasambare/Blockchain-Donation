@@ -6,9 +6,11 @@ const Buy = (state) =>{
     const [message,setMessage] = useState("");
     const [price,setPrice] = useState(0.0);
     const[processing,setProcessing] = useState(false)
-
+    const[isError,setIsError] = useState(false)
+    const[error,setError] = useState("")
 
     const buyChai = async (event)=>{
+        setIsError(false);
         try{
             setProcessing(true)
             event.preventDefault();
@@ -17,6 +19,9 @@ const Buy = (state) =>{
             const transaction = await contract.buyChai(name,message,eths);
             await transaction.wait();
         }catch(e){
+            setIsError(true);
+            setError(e.reason)
+            console.log(e.reason)
             console.log(e)
         }
         setProcessing(false)
@@ -45,12 +50,19 @@ const Buy = (state) =>{
                         </div>
 
                     </div>
-                    <div className="d-flex w-100 justify-content-right">
-                        <p className="fw-bold bg-light-30 rounded px-3">✩ Your donation value will be a secret</p>
-                    <button className="btn ms-auto btn-dark px-4" type="submit">
-                        {(processing)?<><span className="spinner-border p-2 spinner-border-sm mx-2" role="status" aria-hidden="true"></span></>:<></>}
-                        Pay
-                    </button>
+                    <div className="d-flex flex-wrap w-100 justify-content-right">
+                        {(isError)?
+                        <div class="alert alert-danger py-0" role="alert">
+                            {error}
+                        </div>:<>
+                            <p className="fw-bold bg-light-30 rounded px-3">✩ Your donation value will be a secret</p>
+                        </>}
+                        <div className=" ms-auto">
+                            <button className="btn btn-dark px-4" type="submit">
+                                {(processing)?<><span className="spinner-border p-2 spinner-border-sm mx-2" role="status" aria-hidden="true"></span></>:<></>}
+                                Pay
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>

@@ -8,14 +8,22 @@ const Memos = (state) =>{
     const {contract} = state.state;
 
     const getMemos = async ()=>{
-        try{
-            setProcessing(true)
-            const transaction = await contract.getMemos();
-            setList(transaction)
-        }catch(e){
-            console.log(e)
+        if(contract!=null){
+
+            try{
+                setProcessing(true)
+                const transaction = await contract.getMemos();
+                setList(transaction)
+            }catch(e){
+                console.log(e)
+            }
+            setTimeout(
+                () => {
+                    setProcessing(false)
+                }, 
+                500
+            );
         }
-        setProcessing(false)
     }
     useEffect(()=>{
         getMemos()
@@ -26,14 +34,14 @@ const Memos = (state) =>{
                 <div className="container py-3">
 
                     <div className="d-flex flex-wrap rounded my-3 py-3">
-                        <button className="btn btn-success px-4" onClick={getMemos}>
-                            {(processing)?<><span className="spinner-border p-2 spinner-border-sm mx-2" role="status" aria-hidden="true"></span></>:<></>}
+                        <button className="btn btn-success px-2" onClick={getMemos}>
+                            {(processing)?<><span className="spinner-border p-1 spinner-border-sm me-2" role="status" aria-hidden="true"></span></>:<></>}
                             Refresh
                         </button>
                     </div>
-                    <div class="table-responsive-sm">
-                        <table class="table table-borderless">
-                            <thead class="table-opacity-75">
+                    <div className="table-responsive-sm">
+                        <table className="table table-borderless">
+                            <thead className="table-opacity-75">
                                 <tr>
                                     <th scope="col">Name</th>
                                     <th scope="col">Message</th>
