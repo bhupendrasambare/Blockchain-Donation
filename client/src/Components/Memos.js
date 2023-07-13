@@ -40,7 +40,7 @@ const Memos = (state) =>{
                         </button>
                     </div>
                     <div className="table-responsive-sm">
-                        <table className="table table-borderless">
+                        <table className="table table-borderless bg-transparent">
                             <thead className="table-opacity-75">
                                 <tr>
                                     <th scope="col">Name</th>

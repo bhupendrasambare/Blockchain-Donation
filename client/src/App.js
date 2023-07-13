@@ -43,8 +43,22 @@ function App() {
                     contractABI,
                     signer
                   );
+
                   setAccount(account);
                   setState({ provider, signer, contract });
+                  let chainId = await ethereum.request({method:"eth_chainId"})
+                  const hardHatChainId = "0xaa36a7";
+                  if (window.ethereum) {
+                      try {
+                          // Switch the network to Sophia Testnet
+                          await window.ethereum.request({
+                          method: 'wallet_switchEthereumChain',
+                          params: [{ chainId: hardHatChainId }], // 0x2a is the hexadecimal chain ID for Sophia Testnet
+                          });
+                      } catch (error) {
+                          console.log('Failed to switch network:', error);
+                      }
+                  }
                 } else {
                   alert("Please install metamask");
                 }
