@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://bhupendrasambare.github.io/donation",
+  "homepage": "https://bhupendrasambare.github.io/Blockchain-Donation",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
